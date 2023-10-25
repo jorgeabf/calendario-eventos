@@ -19,7 +19,7 @@ import {
   startOfToday
 } from 'date-fns'
 
-import { es } from 'date-fns/locale'
+import { es } from 'date-fns/locale/index.js'
 
 import { Fragment, useState } from 'react'
 
