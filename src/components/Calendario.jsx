@@ -1,9 +1,3 @@
-import { Menu, Transition } from '@headlessui/react'
-import { DotsVerticalIcon } from '@heroicons/react/outline'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon
-} from '@heroicons/react/solid'
 import {
   add,
   eachDayOfInterval,
@@ -21,7 +15,7 @@ import {
 
 import { es } from 'date-fns/locale/index.js'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
 import meetings from '../data/calendar.js'
 
@@ -38,7 +32,8 @@ export default function Calendario() {
   let firstDayCurrentMonth = parse(
     currentMonth,
     'MMM-yyyy',
-    new Date()
+    new Date(),
+    { weekStartsOn: 4 }
   )
 
   let days = eachDayOfInterval({
@@ -82,10 +77,17 @@ export default function Calendario() {
                 <span className='sr-only'>
                   Mes anterior
                 </span>
-                <ChevronLeftIcon
+                <svg
                   className='w-5 h-5'
-                  aria-hidden='true'
-                />
+                  fill='currentColor'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                  aria-hidden='true'>
+                  <path
+                    clipRule='evenodd'
+                    fillRule='evenodd'
+                    d='M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z'></path>
+                </svg>
               </button>
               <button
                 onClick={nextMonth}
@@ -94,10 +96,17 @@ export default function Calendario() {
                 <span className='sr-only'>
                   Mes siguiente
                 </span>
-                <ChevronRightIcon
+                <svg
                   className='w-5 h-5'
-                  aria-hidden='true'
-                />
+                  fill='currentColor'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                  aria-hidden='true'>
+                  <path
+                    clipRule='evenodd'
+                    fillRule='evenodd'
+                    d='M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z'></path>
+                </svg>
               </button>
             </div>
             <div className='grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500'>
@@ -156,7 +165,7 @@ export default function Calendario() {
                     )}>
                     <time
                       dateTime={format(day, 'yyyy-MM-dd')}>
-                      {format(day, 'd')}
+                      {format(day, 'd', { locale: es })}
                     </time>
                   </button>
 
@@ -176,7 +185,7 @@ export default function Calendario() {
           </div>
           <section className='mt-12 md:mt-0 md:pl-14'>
             <h2 className='font-semibold text-gray-900'>
-              Eventos{' '}
+              Agenda{' '}
               <time
                 dateTime={format(
                   selectedDay,
@@ -211,14 +220,13 @@ function Meeting({ meeting }) {
   let endDateTime = parseISO(meeting.endDatetime)
 
   return (
-    <li className='flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100'>
-      <img
-        src={meeting.imageUrl}
-        alt=''
-        className='flex-none w-10 h-10 rounded-full'
-      />
-      <div className='flex-auto'>
-        <p className='text-gray-900'>{meeting.name}</p>
+    <li className='flex items-center py-2 space-x-4 group'>
+      <div
+        className={`flex-auto pl-2 border-l-4 ${meeting.color}`}>
+        <h3 className='text-gray-900 font-semibold'>
+          CURSO {meeting.curso}
+        </h3>
+        <p>{meeting.name}</p>
         <p className='mt-0.5'>
           <time dateTime={meeting.startDatetime}>
             {format(startDateTime, 'h:mm a')}
@@ -229,61 +237,6 @@ function Meeting({ meeting }) {
           </time>
         </p>
       </div>
-      <Menu
-        as='div'
-        className='relative opacity-0 focus-within:opacity-100 group-hover:opacity-100'>
-        <div>
-          <Menu.Button className='-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600'>
-            <span className='sr-only'>Abrir optiones</span>
-            <DotsVerticalIcon
-              className='w-6 h-6'
-              aria-hidden='true'
-            />
-          </Menu.Button>
-        </div>
-
-        <Transition
-          as={Fragment}
-          enter='transition ease-out duration-100'
-          enterFrom='transform opacity-0 scale-95'
-          enterTo='transform opacity-100 scale-100'
-          leave='transition ease-in duration-75'
-          leaveFrom='transform opacity-100 scale-100'
-          leaveTo='transform opacity-0 scale-95'>
-          <Menu.Items className='absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none'>
-            <div className='py-1'>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href='#'
-                    className={classNames(
-                      active
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}>
-                    Edit
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href='#'
-                    className={classNames(
-                      active
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}>
-                    Cancel
-                  </a>
-                )}
-              </Menu.Item>
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
     </li>
   )
 }
