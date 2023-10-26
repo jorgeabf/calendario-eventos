@@ -17,7 +17,7 @@ import { es } from 'date-fns/locale/index.js'
 
 import { useState } from 'react'
 
-import meetings from '../data/calendar.js'
+import meetings from '../data/calendar'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -165,7 +165,7 @@ export default function Calendario() {
                     )}>
                     <time
                       dateTime={format(day, 'yyyy-MM-dd')}>
-                      {format(day, 'd', { locale: es })}
+                      {format(day, 'd')}
                     </time>
                   </button>
 
@@ -184,7 +184,7 @@ export default function Calendario() {
             </div>
           </div>
           <section className='mt-12 md:mt-0 md:pl-14'>
-            <h2 className='font-semibold text-gray-900'>
+            <h2 className='font-semibold text-gray-900 capitalize'>
               Agenda{' '}
               <time
                 dateTime={format(
