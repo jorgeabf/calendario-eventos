@@ -17,7 +17,10 @@ import { es } from 'date-fns/locale/index.js'
 
 import { useState } from 'react'
 
-import meetings from '../data/calendar'
+import meetings from '../../data/calendar.js'
+import Meeting from './Meeting.jsx'
+import PreviousButton from './PreviousButton.jsx'
+import NextButton from './NextButton.jsx'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -70,44 +73,8 @@ export default function Calendario() {
                   locale: es
                 })}
               </h2>
-              <button
-                type='button'
-                onClick={previousMonth}
-                className='-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'>
-                <span className='sr-only'>
-                  Mes anterior
-                </span>
-                <svg
-                  className='w-5 h-5'
-                  fill='currentColor'
-                  viewBox='0 0 24 24'
-                  xmlns='http://www.w3.org/2000/svg'
-                  aria-hidden='true'>
-                  <path
-                    clipRule='evenodd'
-                    fillRule='evenodd'
-                    d='M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z'></path>
-                </svg>
-              </button>
-              <button
-                onClick={nextMonth}
-                type='button'
-                className='-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'>
-                <span className='sr-only'>
-                  Mes siguiente
-                </span>
-                <svg
-                  className='w-5 h-5'
-                  fill='currentColor'
-                  viewBox='0 0 24 24'
-                  xmlns='http://www.w3.org/2000/svg'
-                  aria-hidden='true'>
-                  <path
-                    clipRule='evenodd'
-                    fillRule='evenodd'
-                    d='M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z'></path>
-                </svg>
-              </button>
+              <PreviousButton onClick={previousMonth} />
+              <NextButton onClick={nextMonth} />
             </div>
             <div className='grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500'>
               <div>Do</div>
@@ -212,32 +179,6 @@ export default function Calendario() {
         </div>
       </div>
     </div>
-  )
-}
-
-function Meeting({ meeting }) {
-  let startDateTime = parseISO(meeting.startDatetime)
-  let endDateTime = parseISO(meeting.endDatetime)
-
-  return (
-    <li className='flex items-center py-2 space-x-4 group'>
-      <div
-        className={`flex-auto pl-2 border-l-4 ${meeting.color}`}>
-        <h3 className='text-gray-900 font-semibold'>
-          CURSO {meeting.curso}
-        </h3>
-        <p>{meeting.name}</p>
-        <p className='mt-0.5'>
-          <time dateTime={meeting.startDatetime}>
-            {format(startDateTime, 'h:mm a')}
-          </time>{' '}
-          -{' '}
-          <time dateTime={meeting.endDatetime}>
-            {format(endDateTime, 'h:mm a')}
-          </time>
-        </p>
-      </div>
-    </li>
   )
 }
 
